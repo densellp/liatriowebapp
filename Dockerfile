@@ -13,5 +13,5 @@ RUN npm install
 COPY . .
 
 # Expose port 8080 from container to outside source
-EXPOSE 8080
+EXPOSE 80
 CMD [ "node", "server.js" ]
