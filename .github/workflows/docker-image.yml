@@ -14,7 +14,27 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker Compose File
+    
+    - name: Build the Dockerfile
       run: docker compose build
+      
+    - name: Run Docker Container
+      run: docker compose up -d
+      
     - name: run tests
       uses: liatrio/github-actions/apprentice-action@master
+      
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+      
+    - name: Build and push image
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: densell321/liatriowebapp:latest-${{ github.run_number }}
