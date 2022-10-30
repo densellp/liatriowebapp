@@ -13,7 +13,8 @@ app.get('/', (req, res) => {
   console.log("Sending JSON to requester");
   res.json({
     "message": "My name is Densell",
-    "timestamp": Math.floor(Date.now() / 1000) // generates a timestamp in seconds
+    "timestamp": Math.floor(Date.now() / 1000), // generates a timestamp in seconds
+    "test": "This is a test"
   })
 });
 
