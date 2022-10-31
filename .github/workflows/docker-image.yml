@@ -47,8 +47,22 @@ jobs:
       with:
         credentials_json: '${{ secrets.SERVICE_ACCOUNT_KEY }}'
 
-    - name: 'Deploy to Cloud Run'
-      uses: 'google-github-actions/deploy-cloudrun@v0'
-      with:
-        image: 'liatriowebapp'
-        service: 'liatriowebapp'
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0.2.1
+      
+    - name: Build and Push
+      run: |-
+          gcloud builds submit \
+            --quiet \
+            --tag "gcr.io/erudite-buckeye-347923/liatriowebapp"
+#       working-directory: .docker
+      
+    - name: Deploy GCR
+      run: |-
+          gcloud run deploy "liatriowebapp" \
+            --quiet \
+            --region "us-central1" \
+            --image "gcr.io/erudite-buckeye-347923/liatriowebapp" \
+            --platform "managed" \
+            --allow-unauthenticated
+    
