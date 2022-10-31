@@ -12,9 +12,10 @@ app.get('/', (req, res) => {
   res.statusCode = 200;
   console.log("Sending JSON to requester");
   res.json({
-    "message": "My name is Densell",
+    // "message": "My name is Densell",
     "timestamp": Math.floor(Date.now() / 1000), // generates a timestamp in seconds
-    "test": "This is a test"
+    "test": "This is a test",
+    "fail": "I will failt the Unit Test!"
   })
 });
 
