@@ -38,3 +38,14 @@ jobs:
       with:
         push: true
         tags: densell321/liatriowebapp:latest-${{ github.run_number }}
+        
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.SERVICE_ACCOUNT_KEY }}'
+
+    - name: 'Deploy to Cloud Run'
+      uses: 'google-github-actions/deploy-cloudrun@v0'
+      with:
+        image: 'liatriowebapp'
+        service: 'liatriowebapp'
