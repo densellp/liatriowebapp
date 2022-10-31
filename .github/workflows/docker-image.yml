@@ -15,8 +15,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Build the Dockerfile
+    - name: Build the Docker compose file
       run: docker compose build
+      
+    - name: Build Dockerfile
+      run: docker build -t "liatriowebapp" .
       
     - name: Run Docker Container
       run: docker compose up -d
