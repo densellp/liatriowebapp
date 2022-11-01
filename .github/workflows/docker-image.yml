@@ -75,6 +75,5 @@ jobs:
             --region "us-central1" \
             --image "gcr.io/erudite-buckeye-347923/liatriowebapp" \
             --platform "managed" \
-            # This is needed to allow communication with API
             --allow-unauthenticated
     
