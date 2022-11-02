@@ -1,10 +1,10 @@
-name: Docker Image CI
+name: Docker Image CI/CD
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
 
 jobs:
 
@@ -13,50 +13,61 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # This begins the process of running commands in github actions
     - uses: actions/checkout@v3
     
-    - name: Build the Docker compose file
+    # This needs to be built for the Unit test
+    - name: Build the Docker Compose file
       run: docker compose build
       
+    # This needs to be built to deploy to the cloud
     - name: Build Dockerfile
       run: docker build -t "liatriowebapp" .
       
-    - name: Run Docker Container
+    # Runs container for Unit Test
+    - name: Run Docker Compose
       run: docker compose up -d
       
+    # Runs Unit Test provided by liatrio
     - name: run tests
       uses: liatrio/github-actions/apprentice-action@master
       
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+#     # Authentication for Dockerhub to publish image
+#     - name: Login to DockerHub
+#       uses: docker/login-action@v1
+#       with:
+#         username: ${{ secrets.DOCKER_USERNAME }}
+#         password: ${{ secrets.DOCKER_PASSWORD }}
         
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+#     # Buildx action used to setup a push action to the dockerhub
+#     - name: Set up Docker Buildx
+#       uses: docker/setup-buildx-action@v2
       
-    - name: Build and push image
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: densell321/liatriowebapp:latest-${{ github.run_number }}
+#     # Build image and push to dockerhub
+#     - name: Build and push image
+#       uses: docker/build-push-action@v2
+#       with:
+#         push: true
+#         tags: densell321/liatriowebapp:latest-${{ github.run_number }}
         
+    # Authenticate Google Cloud Platform to deploy image
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ secrets.SERVICE_ACCOUNT_KEY }}'
 
+    # Setting up GCP SDK to run gcloud commands
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v0.2.1
       
-    - name: Build and Push
+    # Building and pushing image to registry on google cloud run
+    - name: Build and Push to GCR
       run: |-
           gcloud builds submit \
             --quiet \
             --tag "gcr.io/erudite-buckeye-347923/liatriowebapp"
-#       working-directory: .docker
       
+    # Deploying GCP image from registry from previous job
     - name: Deploy GCR
       run: |-
           gcloud run deploy "liatriowebapp" \
