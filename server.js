@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
   res.json({
     "message": "My name is Densell",
     "timestamp": Math.floor(Date.now() / 1000), // generates a timestamp in seconds
-    // "test": "This is a test, also this is a new Deployment"
+    "test": "This is a test, also this is a new Deployment"
   })
 });
 
@@ -23,3 +23,4 @@ app.get('/', (req, res) => {
 app.listen(PORT, HOST, () => {
   console.log(`Running on http://${HOST}:${PORT}`);
 });
+// This is a comment
