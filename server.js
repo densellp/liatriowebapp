@@ -1,3 +1,4 @@
+// Forces the uses of declared variables, no dynamic variables
 'use strict';
 
 // grabs the libray for express
@@ -14,8 +15,7 @@ app.get('/', (req, res) => {
   res.json({
     "message": "My name is Densell",
     "timestamp": Math.floor(Date.now() / 1000), // generates a timestamp in seconds
-    // "test": "This is a test, also this is a new Deployment",
-    // "fail": "I will failt the Unit Test!"
+    // "test": "This is a test, also this is a new Deployment"
   })
 });
 
