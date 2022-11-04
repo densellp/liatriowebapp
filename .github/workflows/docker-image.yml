@@ -20,9 +20,9 @@ jobs:
     - name: Build the Docker Compose file
       run: docker compose build
       
-    # This needs to be built to deploy to the cloud
-    - name: Build Dockerfile
-      run: docker build -t "liatriowebapp" .
+#     # This needs to be built to deploy to the cloud
+#     - name: Build Dockerfile
+#       run: docker build -t "liatriowebapp" .
       
     # Runs container for Unit Test
     - name: Run Docker Compose
